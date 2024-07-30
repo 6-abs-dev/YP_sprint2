@@ -4,12 +4,7 @@
 # Инициализируем бд
 ###
 
-#docker compose exec -T mongodb1 mongosh <<EOF
-#use somedb
-#for(var i = 0; i < 1000; i++) db.helloDoc.insertOne({age:i, name:"ly"+i})
-#EOF
-
-winpty docker exec -it configSrv mongosh --port 27017 <<EOF
+docker exec -it configSrv mongosh --port 27017 <<EOF
 rs.initiate(
   {
     _id : "config_server",
@@ -22,7 +17,7 @@ rs.initiate(
 exit();
 EOF
 
-winpty docker exec -it shard1 mongosh --port 27018 <<EOF
+docker exec -it shard1 mongosh --port 27018 <<EOF
 rs.initiate(
     {
       _id : "shard1",
@@ -37,12 +32,12 @@ rs.initiate(
 exit();
 EOF
 
-winpty docker exec -it shard2 mongosh --port 27019 <<EOF
+docker exec -it shard2 mongosh --port 27019 <<EOF
 rs.initiate(
     {
       _id : "shard2",
       members: [
-        { _id : 0, host : "shard1:27018" },
+        { _id : 0, host : "shard2:27019" },
 		    { _id: 1, host: "mongodb2repl1:27024"},
 		    { _id: 2, host: "mongodb2repl2:27025"},
 		    { _id: 3, host: "mongodb2repl3:27026"}
@@ -52,7 +47,7 @@ rs.initiate(
 exit();
 EOF
 
-winpty docker exec -it mongos_router mongosh --port 27020 <<EOF
+docker exec -it mongos_router mongosh --port 27020 <<EOF
 sh.addShard( "shard1/shard1:27018");
 sh.addShard( "shard2/shard2:27019");
 sh.enableSharding("somedb");

@@ -22,10 +22,7 @@ rs.initiate(
     {
       _id : "shard1",
       members: [
-        { _id : 0, host : "shard1:27018" },
-		    { _id: 1, host: "mongodb1repl1:27021"},
-		    { _id: 2, host: "mongodb1repl2:27022"},
-		    { _id: 3, host: "mongodb1repl3:27023"}
+        { _id : 0, host : "shard1:27018" }
       ]
     }
 );
@@ -37,10 +34,7 @@ rs.initiate(
     {
       _id : "shard2",
       members: [
-        { _id : 0, host : "shard2:27019" },
-		    { _id: 1, host: "mongodb2repl1:27024"},
-		    { _id: 2, host: "mongodb2repl2:27025"},
-		    { _id: 3, host: "mongodb2repl3:27026"}
+        { _id : 0, host : "shard2:27019" }
       ]
     }
 );
@@ -57,5 +51,4 @@ use somedb
 for(var i = 0; i < 1000; i++) db.helloDoc.insert({age:i, name:"ly"+i})
 db.helloDoc.countDocuments()
 EOF
-
 
