@@ -4,7 +4,7 @@
 # Инициализируем бд
 ###
 
-docker exec -it configSrv mongosh --port 27017 <<EOF
+docker exec -i configSrv mongosh --port 27017 <<EOF
 rs.initiate(
   {
     _id : "config_server",
@@ -17,7 +17,7 @@ rs.initiate(
 exit();
 EOF
 
-docker exec -it shard1 mongosh --port 27018 <<EOF
+docker exec -i shard1 mongosh --port 27018 <<EOF
 rs.initiate(
     {
       _id : "shard1",
@@ -32,7 +32,7 @@ rs.initiate(
 exit();
 EOF
 
-docker exec -it shard2 mongosh --port 27019 <<EOF
+docker exec -i shard2 mongosh --port 27019 <<EOF
 rs.initiate(
     {
       _id : "shard2",
@@ -47,7 +47,7 @@ rs.initiate(
 exit();
 EOF
 
-docker exec -it mongos_router mongosh --port 27020 <<EOF
+docker exec -i mongos_router mongosh --port 27020 <<EOF
 sh.addShard( "shard1/shard1:27018");
 sh.addShard( "shard2/shard2:27019");
 sh.enableSharding("somedb");
